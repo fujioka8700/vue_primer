@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>はじめてのVue.js</title>
+</head>
+<body>
+    <div id="app">
+        <p>
+            {{ message }}
+        </p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script>
+        // ロードされ、Vueがグローバル変数として、定義されているか確認
+        console.assert(typeof Vue !== 'undefined');
+        var vm = new Vue({
+            // el: '#app',
+            data: {
+                message: 'こんにちは!'
+            }
+        });
+
+        // UI操作や通信の後、要素が生成されてからマウントを行う
+        vm.$mount('#app');
+    </script>
+</body>
+</html>
