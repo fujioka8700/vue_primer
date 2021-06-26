@@ -5,11 +5,52 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>はじめてのVue.js</title>
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
 </head>
 <body>
     <div id="app">
-        <p>{{ items[0].name }}</p>
+        <p>{{ items[0].name }} : {{ items[0].price }} x {{ items[0].quantity }}</p>
+        <!-- <p>合計金額 : {{ items[0].price * items[0].quantity }}</p> -->
+        <!-- <p>フィルタの処理例 {{ 1000 | numberWithDelimiter }}</p>
+        <p>合計 : {{ tototalPrice }}</p>
+        <p>税込み価格 : {{ totalPriceWithPrice }}</p> -->
+
+        <!-- フィルタで汎用的なテキストフォーマット処理を適用 -->
+        <p>小計 : {{ totalPrice | numberWithDelimiter }}円</p>
+        <p>合計 : {{ totalPriceWithPrice | numberWithDelimiter }}円</p>
+
+        <!-- 属性値に応じて、表示を出し分けする -->
+        <p v-show="!canBuy">{{ 1000 | numberWithDelimiter }}円以上からご購入いただけます。</p>
+
+        <!-- クラスのバインディング -->
+        <!-- <p :class="{ error: !canBuy }">{{ 1000 | numberWithDelimiter }}円以上からご購入いただけます。</p> -->
+
+        <!-- クラスのバインディング -->
+        <p :class="{shark: false, mecha: false}">クラスのバインディング</p>
+
+        <!-- オブジェクトをテンプレートに直接記述するのではなく、算出プロパティとしてVueインスタンスに移すことをおすすめ -->
+        <p :class="errorMessageClass">{{ 1000 | numberWithDelimiter }}円以上からご購入いただけます。</p>
+
+        <!-- スタイルのバインディング(v-bind:style) -->
+        <p :style="{color: 'red'}">スタイルのバインディング</p>
+
+        <!-- 式を組み合わせても可能 -->
+        <p :style="{border: (canBuy ? '' : '1px solid red'), color: (canBuy ? '' : 'blue')}">式と組み合わせ可能</p>
+
+        <!-- v-bind:styleもv-class同様に属性値のオブジェクトや配列の記述が複雑になる場合は、算出プロパティに移すべき -->
+        <p :style="errorMessageStyle">{{ 1000 | numberWithDelimiter }}円以上からご購入いただけます。</p>
+
     </div>
+
+    <button
+        id="b-button"
+        :title="loggedInButton"
+        :disabled="!canBuy"
+    >購入</button>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script src="02_05app.js"></script>
