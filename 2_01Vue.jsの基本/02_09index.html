@@ -8,9 +8,16 @@
 </head>
 <body>
     <div id="app">
-        <p>{{ items[0].name }} : {{ items[0].price }} x {{ items[0].quantity }}</p>
-        <p>小計:{{ totalPrice | numberWithDelimiter }}</p>
-        <!-- ここから -->
+        <!-- 1000円以上になるまで、赤く表示する -->
+        <div :style="errorMessageStyle">
+            <p>{{ items[0].name }} : {{ items[0].price }} x {{ items[0].quantity }}</p>
+            <p>小計:{{ totalPrice | numberWithDelimiter }}</p>
+            <p>合計(税込):{{ totalPriceWithTax | numberWithDelimiter }}円</p>
+            <!-- 1000円以上になるまで、注意を表示する -->
+            <p v-show="!canBuy">
+                {{ 1000 | numberWithDelimiter }}円以上から、ごこう購入いただけます
+            </p>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
