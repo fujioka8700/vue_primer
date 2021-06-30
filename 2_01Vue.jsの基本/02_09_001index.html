@@ -4,16 +4,17 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>スタイルバインディングのサンプルへの適用</title>
+    <title>Vue.Stationery store</title>
 </head>
 <body>
     <div id="app">
         <ul>
             <li v-for="item in items" :key="item.name">
                 {{ item.name }}の個数:
+                <!-- v-model.lazyで@changeと同じ動き -->
                 <input
                     type="number"
-                    v-model.lazy="item.quantity"
+                    v-model="item.quantity"
                     min="0"
                 >
             </li>
@@ -32,8 +33,9 @@
             <p>合計(税込):{{ totalPriceWithTax | numberWithDelimiter }}円</p>
             <!-- 1000円以上になるまで、注意を表示する -->
             <p v-show="!canBuy">
-                {{ 1000 | numberWithDelimiter }}円以上から、ごこう購入いただけます
+                {{ 1000 | numberWithDelimiter }}円以上から、ご購入いただけます
             </p>
+            <button @click="doBuy">購入</button>
         </div>
     </div>
 
