@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>タイトル</title>
+</head>
+<body>
+    <div id="app">
+        <!-- リンク先を`to`プロパティに指定します -->
+        <!-- デフォルトで<router-link>は`<a>`タグとしてレンダリングされます -->
+        <router-link to="/top">トップページ</router-link>
+        <router-link to="/users">ユーザー一覧ページ</router-link>
+        <router-view></router-view>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // ルートオプションを渡してルーターインスタンスを生成
+        var router = new VueRouter({
+            // コンポーネントをマッピングしたルート定義を配列で渡す
+            routes: [
+                {
+                    path: '/top',
+                    component: {
+                        template: '<div>トップページです。</div>'
+                    }
+                },
+                {
+                    path: '/users',
+                    component: {
+                        template: '<div>ユーザー一覧ページです。</div>'
+                    }
+                }
+            ]
+        })
+
+        // ルーターのインスタンスをrootとなるVueインスタンスに渡す
+        var app = new Vue({
+            router: router
+        }).$mount('#app')
+    </script>
+</body>
+</html>
