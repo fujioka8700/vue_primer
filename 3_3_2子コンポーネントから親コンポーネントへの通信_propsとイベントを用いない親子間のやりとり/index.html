@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3_3_2子コンポーネントから親コンポーネントへの通信_propsとイベントを用いない親子間のやりとり</title>
+</head>
+<body>
+    梨: <span>2個<button>追加</button></span><br>
+    イチゴ: <span>3個<button>追加</button></span>
+    <p>合計:5</p>
+
+    <div id="fruits-counter">
+        <div v-for="fruit in fruits">
+            <!-- カスタムイベントをv-onで補足 -->
+            {{ fruit.name }}: <counter-button @increment="incrementCartStatus"></counter-button>
+        </div>
+        <p>合計: {{ total }}個</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
