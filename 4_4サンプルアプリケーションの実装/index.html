@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>サンプルアプリケーションの実装</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- router-linkによるナビゲーションの定義 -->
+        <nav>
+            <router-link to="/top">トップページ</router-link>
+            <router-link to="/users">ユーザー一覧</router-link>
+            <router-view></router-view>
+        </nav>
+    </div>
+
+    <script type="text/x-template" id="user-list">
+        <!-- ここにコンポーネントのtemplateを記載する -->
+        <!-- コンポーネントごとに繰り返しscriptタグで定義 -->
+        <div>ユーザー一覧です。</div>
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+    <script src="app.js"></script>
+    <script>
+        var UserList = {
+            template: '#user-list'
+        }
+
+        var router = new VueRouter({
+            routes: [{
+                    path: '/top',
+                    component: {
+                        template: '<div>トップページです。</div>'
+                    }
+                },
+                {
+                    path: '/users',
+                    component: UserList
+                }
+            ]
+        })
+
+        var app = new Vue({
+            router: router
+        }).$mount('#app')
+    </script>
+</body>
+
+</html>

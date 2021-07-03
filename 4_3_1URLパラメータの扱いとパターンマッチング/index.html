@@ -1,29 +1,66 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>タイトル</title>
+    <title>4_3_1URLパラメータの扱いとパターンマッチング</title>
 </head>
+
 <body>
     <div id="app">
         <!-- リンク先を`to`プロパティに指定します -->
         <!-- デフォルトで<router-link>は`<a>`タグとしてレンダリングされます -->
         <router-link to="/top">トップページ</router-link>
         <router-link to="/users">ユーザー一覧ページ</router-link>
+        <router-link :to="{ name: 'user', params: { userId: 123 }}">ユーザー詳細ページ</router-link>
+        <router-link to="/items">商品一覧</router-link>
         <router-view></router-view>
     </div>
 
+    <script type="text/x-template" id="user-list">
+        <div>
+            <p>ユーザー一覧</p>
+        </div>
+    </script>
+
+    <script type="text/x-template" id="item-list">
+        <div>
+            <p>商品一覧</p>
+        </div>
+    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
-    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+    <!-- <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script> -->
+    <script src="https://unpkg.com/vue-router@3.0.1"></script>
     <script src="app.js"></script>
     <script>
+        // ユーザー一覧のコンポーネント
+        var UserList = {
+            template: '#user-list',
+            beforeRouteLeave (to, from, next) {
+                alert('beforeRouteLeaveが実行されました。')
+            }
+        }
+
+        // 商品一覧のコンポーネント
+        var ItemList = {
+            template: '#item-list',
+            beforeRouteEnter (to, from, next) {
+                alert('beforeRouteEnterが実行されました。')
+            },
+        }
+
+        var FruitsListTitle = Vue.extend({
+            template: '<h1>フルーツ一覧</h1>'
+        })
+
         // ルートオプションを渡してルーターインスタンスを生成
         var router = new VueRouter({
             // コンポーネントをマッピングしたルート定義を配列で渡す
-            routes: [
-                {
+            routes: [{
+                    // パターンマッチング
                     path: '/top',
                     component: {
                         template: '<div>トップページです。</div>'
@@ -31,12 +68,57 @@
                 },
                 {
                     path: '/users',
-                    component: {
-                        template: '<div>ユーザー一覧ページです。</div>'
+                    // component: {
+                    // template: '<div>ユーザー一覧ページです。</div>'
+                    // },
+                    component: UserList,
+                    // ルート単位のフック関数
+                    beforeEnter: function (to, from, next) {
+                        // /users?redirect=trueでアクセスされた時だけ、topにリダイレクトするフック関数を追加
+                        if (to.query.redirect === 'true') {
+                            next('/top')
+                        } else {
+                            next()
+                        }
                     }
+                },
+                {
+                    // コロンで始まるパターンマッチング
+                    path: '/user/:userId',
+                    component: {
+                        template: '<div>ユーザーIDは{{ $route.params.userId }}</div>'
+                    }
+                },
+                {
+                    // 名前付きルート
+                    path: '/user/:userId',
+                    name: 'user',
+                    component: {
+                        template: '<div>ユーザーIDは{{ $route.params.userId }}</div>'
+                    }
+                },
+                {
+                    // コンポーネント内のフック関数
+                    path: '/items',
+                    component: ItemList
                 }
             ]
         })
+
+        // router.pushを使った遷移
+        // router.push({ name: 'user', params: { userId: 456 }})
+
+        // グローバルのフック関数
+        // 全てのページ変異に対して設定できるフック関数
+        // router.beforeEach((to, from, next) => {
+        //     if (to.path === '/users') {
+        //         // next('/top')
+        //         next()
+        //     } else {
+        //         // このフック関数内でnextを呼び出さないと、延々と遷移が終わらなくなるので注意
+        //         next()
+        //     }
+        // })
 
         // ルーターのインスタンスをrootとなるVueインスタンスに渡す
         var app = new Vue({
@@ -44,4 +126,5 @@
         }).$mount('#app')
     </script>
 </body>
+
 </html>
